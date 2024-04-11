@@ -1,0 +1,84 @@
+/* PRODUCTOS */
+.productos {
+  margin: 20px;
+  text-align: center;
+  @include contCard;
+  background-color: $color-fondo;
+
+  a img {
+    width: 20px;
+  }
+}
+
+.prodImg {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  object-fit: contain;
+}
+
+/* SUBTITULOS SECUNDARIOS*/
+.subtituloSec {
+  background-color: $color-resaltador;
+  font-weight: bold;
+  color: $color-fuente-secundario;
+  padding: 1px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SUCURSALES */
+.prin {
+  display: block;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sucPrin {
+  align-content: center;
+  display: inline-block;
+  font-size: 25px;
+  text-align: left;
+  width: 500px;
+  height: 300px;
+  margin: 20px;
+}
+
+iframe {
+  width: 500px;
+  height: 300px;
+  display: inline-block;
+}
+
+img {
+  width: 30px;
+}
+
+.sucPrin p {
+  display: inline;
+  font-size: 25px;
+}
+
+/* CONTACTO */
+form {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+input,
+textarea {
+  background-color: $color-fondo;
+  display: block;
+  width: 500px;
+  border: 2px solid $color-fuente-primario;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}

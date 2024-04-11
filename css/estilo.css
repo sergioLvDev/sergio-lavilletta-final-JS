@@ -46,7 +46,7 @@ a {
 
 .menuNav a {
   font-size: 1rem;
-  font-weight: solid;
+  font-weight: bold;
   border-left: 1px solid black;
   border-right: 1px solid black;
   transition: all 1s;
@@ -88,32 +88,7 @@ a {
   color: black;
   font-size: 30px;
   font-weight: 300;
-  margin: 10px;
-}
-
-/* PROMOCIONES */
-.promoCondi {
-  height: 500px;
-  margin: 20px;
-  width: 250px;
-  box-shadow: 3px 3px grey;
-  border: none;
-}
-
-.promoImg {
-  width: 100%;
-  height: 85%;
-  object-fit: cover;
-}
-
-.promoImgp {
-  padding: 15px;
-  width: 100%;
-  background-color: #F3F5D2;
-  text-transform: uppercase;
-  font-size: 15px;
-  border-radius: none;
-  height: 15%;
+  margin: 10px 20px;
 }
 
 /* PRODUCTOS */
@@ -135,13 +110,28 @@ a {
   object-fit: contain;
 }
 
+/* SUBTITULOS SECUNDARIOS*/
+.subtituloSec {
+  background-color: #13B52D;
+  font-weight: bold;
+  color: #fafafa;
+  padding: 1px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* SUCURSALES */
 .prin {
   display: block;
   padding: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .sucPrin {
+  align-content: center;
   display: inline-block;
   font-size: 25px;
   text-align: left;
