@@ -1,0 +1,25 @@
+/* BOTONES */
+.contBotones {
+  display: flex;
+  justify-content: center;
+}
+
+.botonesForm {
+  display: inline;
+  width: 150px;
+  background-color: $color-resaltador;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px 15px;
+  color: $color-fuente-secundario;
+  border-radius: 3px;
+  transition: all 0.5s;
+  border: none;
+  margin: 5px 5px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: $color-resaltador;
+    color: $color-fuente-primario;
+  }
+}

@@ -1,0 +1,48 @@
+/* Header */
+.logo {
+  width: 120px;
+}
+
+.encabezado {
+  border-top: 10px solid $color-resaltador;
+}
+
+h1 {
+  font-size: 4rem;
+  padding: 3px;
+  margin: 0;
+}
+
+nav ul li {
+  list-style: none;
+  margin: 10px;
+}
+
+a {
+  @include anclas;
+}
+
+.menuNav a {
+  font-size: 1rem;
+  font-weight: solid;
+  border-left: 1px solid $color-fuente-primario;
+  border-right: 1px solid $color-fuente-primario;
+  transition: all 1s;
+
+  &:hover {
+    background-color: $color-resaltador;
+    color: $color-fuente-secundario;
+  }
+}
+
+/* SUBTITULO */
+.subtitulo {
+  background-color: $color-resaltador;
+  font-weight: bold;
+  padding: 5px;
+  color: $color-fuente-secundario;
+
+  h2 {
+    font-size: 2.5rem;
+  }
+}

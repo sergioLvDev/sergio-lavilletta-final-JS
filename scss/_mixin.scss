@@ -1,0 +1,12 @@
+/* MIXIN */
+@mixin anclas {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+@mixin contCard {
+  width: 250px;
+  box-shadow: 3px 3px $color-sombras;
+  border: none;
+}

@@ -1,0 +1,24 @@
+/* PORTADA */
+
+/* contenedor padre x 2  */
+.contImg1 {
+  width: 50%;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imgCondi {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+/* parrafito */
+.contImg1 p {
+  color: $color-fuente-primario;
+  font-size: 30px;
+  font-weight: 300;
+  margin: 10px;
+}
