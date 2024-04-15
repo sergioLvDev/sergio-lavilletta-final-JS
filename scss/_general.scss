@@ -1,6 +1,6 @@
 /* GENERAL */
 
-body {
+.bodyIndex {
   font-family: 'Caveat', cursive;
   font-weight: bold;
   background-image: url(../img/fondo-hoja.jpg);
@@ -8,10 +8,11 @@ body {
   background-size: cover;
   background-position: center;
 
-  h3 {
-    text-align: left;
-    text-decoration: underline;
-    padding: 20px;
-    font-size: 30px;
-  }
+}
+
+h3 {
+  text-align: left;
+  text-decoration: underline;
+  padding: 20px;
+  font-size: 30px;
 }

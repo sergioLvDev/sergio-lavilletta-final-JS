@@ -5,6 +5,7 @@
 }
 
 .botonesForm {
+  align-items: center;
   display: inline;
   width: 150px;
   background-color: $color-resaltador;
@@ -22,4 +23,15 @@
     background-color: $color-resaltador;
     color: $color-fuente-primario;
   }
+}
+
+.botonEliminar {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  color: $color-fuente-secundario;
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  color: red;
 }

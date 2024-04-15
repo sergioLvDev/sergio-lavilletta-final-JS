@@ -16,6 +16,13 @@
   object-fit: contain;
 }
 
+/* TABLA */
+.tabla {
+  display: flex;
+  justify-content: center;
+}
+
+
 /* SUBTITULOS SECUNDARIOS*/
 .subtituloSec {
   background-color: $color-resaltador;
@@ -61,24 +68,48 @@ img {
   font-size: 25px;
 }
 
-/* CONTACTO */
-form {
-  margin-top: 20px;
+.entregasDetalles {
+  font-size: 1.5rem;
+  margin: 20px;
 }
 
-label {
-  display: block;
+.bodyCarrito {
+  font-family: 'Caveat', cursive;
   font-weight: bold;
-  font-size: 20px;
+  background-color: $color-fondo;
 }
 
-input,
-textarea {
-  background-color: $color-fondo;
-  display: block;
-  width: 500px;
-  border: 2px solid $color-fuente-primario;
-  border-radius: 3px;
-  margin-bottom: 10px;
-  font-size: 20px;
+.pedidos {
+  text-align: center;
+}
+
+.carrito {
+  font-size: 30px;
+}
+
+.carritoBorde {
+  border: 5px solid $color-resaltador;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s;
+
+  &:hover {
+    border-radius: 15px;
+    border: 5px solid $color-resaltador;
+    transition: all 0.3s;
+  }
+}
+
+
+.botonesCarrito {
+  display: flex;
+  justify-content: space-around;
+}
+
+.numerito {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 5px;
 }
