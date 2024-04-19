@@ -254,6 +254,16 @@ img {
   color: red;
 }
 
+.btnbotoncitos {
+  background-color: #13B52D;
+  color: #fafafa;
+  border: none;
+  border-radius: 5px;
+  margin: auto;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 /* FOOTER */
 .logoSlv {
   display: flex;

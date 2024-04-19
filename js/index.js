@@ -9,19 +9,124 @@ const arrayStock = [
   { id: 8, nombre: "Romero", precio: 500, cantidad: 1 },
 ];
 
-const item = document.querySelector("#items");
+let item = document.getElementById("items");
+let total = document.querySelector("#total");
 let agregar = document.querySelectorAll(".agregar");
 let numerito = document.querySelector("#numerito");
-let botonEliminar = document.querySelectorAll(".botonEliminar");
 let vaciar = document.querySelector("#vaciar");
-let total = document.querySelector("#total");
 
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-let idBoton;
-console.log(carrito);
+let carrito;
+if (localStorage.getItem("carrito") != null) {
+  carrito = JSON.parse(localStorage.getItem("carrito"));
+} else {
+  carrito = [];
+}
+function botonizarAgregadoAlCarrito() {
+  agregar.forEach((boton) => {
+    boton.addEventListener("click", (el) => {
+      const idBoton = el.currentTarget.id;
+      const producto = arrayStock.find((elemento) => elemento.id == idBoton);
+      if (carrito.some((elemento) => elemento.id == idBoton)) {
+        Toastify({
+          text: "Producto ya agregado elija Otro",
+          className: "info",
+          position: "left",
+          style: {
+            background: "linear-gradient(to right, red, red)",
+          },
+        }).showToast(); //muestra un toastify cuando se agrega un producto ya agregado repetido !!!
+      } else {
+        carrito.push(producto);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        numerito.innerText = carrito.length;
+        console.log(carrito);
+        prodAgregadoToastify();
+      }
+    });
+  });
+}
+botonizarAgregadoAlCarrito();
+let carstorage = JSON.parse(localStorage.getItem("carrito"));
 
-// Función que muestra un Toastify cuando se agrega un producto
-const clickToastify = () => {
+function agregarItem(caritems) {
+  item.innerHTML = ""; //Limpia la Tabla
+  totalTabla();
+  caritems.forEach((elemento, id) => {
+    let { nombre, precio, cantidad } = elemento;
+    const tr = document.createElement("tr");
+    item.appendChild(tr);
+
+    const thNombre = document.createElement("th");
+    tr.appendChild(thNombre);
+    thNombre.innerText = nombre;
+    /////////////////////////////////////////////////////////////////////////////////
+    let thCantidad = document.createElement("th");
+
+    let menos = document.createElement("button");
+    menos.innerText = "-";
+    menos.className = "btnbotoncitos";
+    menos.onclick = function () {
+      if (elemento.cantidad >= 1) {
+        elemento.cantidad--; //Incrementa la Cantidad del elemento
+        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
+      }
+      if (elemento.cantidad === 0) {
+        carstorage.splice(id, 1);
+        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
+      }
+      agregarItem(caritems); //Dibja la tabla
+    };
+    thCantidad.appendChild(menos);
+
+    let span = document.createElement("span");
+    span.innerText = cantidad;
+    thCantidad.appendChild(span);
+    span.className = "mx-2";
+    tr.appendChild(thCantidad);
+
+    let mas = document.createElement("button");
+    mas.innerText = "+";
+    mas.className = "btnbotoncitos";
+    mas.onclick = function () {
+      if (elemento.cantidad >= 1) {
+        elemento.cantidad++; //Incrementa la Cantidad del elemento
+        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
+      } //Dibja la tabla
+      if (elemento.cantidad === 0) {
+        carstorage.splice(id, 1);
+        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
+      }
+      agregarItem(caritems); //Dibja la tabla
+    };
+    thCantidad.appendChild(mas);
+    /////////////////////////////////////////////////////////////////////////////////
+    const thPrecio = document.createElement("th");
+    tr.appendChild(thPrecio);
+    thPrecio.innerText = precio;
+
+    const thEliminar = document.createElement("th");
+    tr.appendChild(thEliminar);
+    const botonEliminar = document.createElement("button");
+    botonEliminar.innerHTML = '<i class="bi bi-trash3-fill"></i>';
+    botonEliminar.classList.add("botonEliminar");
+    botonEliminar.onclick = function () {
+      carstorage.splice(id, 1);
+      console.log(id);
+      localStorage.setItem("carrito", JSON.stringify(carstorage));
+      agregarItem(caritems);
+    };
+    thEliminar.appendChild(botonEliminar);
+  });
+}
+
+agregarItem(carstorage);
+function totalTabla() {
+  total.innerText = carstorage.reduce(
+    (acc, elemento) => acc + elemento.cantidad * elemento.precio,
+    0
+  );
+}
+function prodAgregadoToastify() {
   Toastify({
     text: "Producto Agregado al Carrito",
     className: "info",
@@ -30,73 +135,8 @@ const clickToastify = () => {
       background: "linear-gradient(to right, green, green)",
     },
   }).showToast();
-};
-
-// Agregar evento de click a todos los botones para un Toastify
-agregar.forEach((boton) => {
-  boton.addEventListener("click", agregarProducto);
-});
-agregaElementoAlCarrito();
-// Función que agrega un producto al carrito
-function agregarProducto(el) {
-  const idBoton = el.currentTarget.id;
-  const productoAgregadoCarrito = arrayStock.find(
-    (elemento) => elemento.id == idBoton
-  ); //busca el elemento que coincide con el id del boton
-  /* busca si hay un elemento con el mismo id */
-  if (carrito.some((elemento) => elemento.id == idBoton)) {
-    Toastify({
-      text: "Producto ya agregado elija Otro",
-      className: "info",
-      position: "left",
-      style: {
-        background: "linear-gradient(to right, red, red)",
-      },
-    }).showToast(); //muestra un toastify cuando se agrega un producto ya agregado repetido !!!
-  } else {
-    clickToastify();
-    carrito.push(productoAgregadoCarrito);
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    numerito.innerText = carrito.length; // muestra el numero de elementos en el carrito
-    agregaElementoAlCarrito(); // Agregar el nuevo elemento al carrito
-  }
 }
-
-// Agrega los elementos al carrito y muestra un toastify cuando se agrega un nuevo elemento
-function agregaElementoAlCarrito() {
-  item.innerHTML = ""; // Limpiar el contenido del carrito antes de agregar los elementos
-  carrito.forEach((elemento) => {
-    let { nombre, cantidad, precio } = elemento;
-
-    let tr = document.createElement("tr");
-    item.appendChild(tr);
-
-    let thNombre = document.createElement("th");
-    tr.appendChild(thNombre);
-    thNombre.innerText = nombre;
-
-    let thCantidad = document.createElement("th");
-    tr.appendChild(thCantidad);
-    thCantidad.innerText = cantidad;
-
-    let thPrecio = document.createElement("th");
-    tr.appendChild(thPrecio);
-    thPrecio.innerText = precio;
-
-    let thEliminar = document.createElement("th");
-    tr.appendChild(thEliminar);
-    thEliminar.innerHTML =
-      '<button class="botonEliminar"><i class="bi bi-trash3-fill"></i></button>';
-    let eliminar = document.querySelector(".botonEliminar");
-    eliminar.onclick = function () {
-      let indice = carrito.find((el) => el.id == idBoton);
-      carrito.splice(indice, 1);
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      agregaElementoAlCarrito();
-    };
-  });
-  actualizarTotal();
-}
+console.log(carstorage);
 
 vaciar.addEventListener("click", () => {
   Swal.fire({
@@ -107,6 +147,7 @@ vaciar.addEventListener("click", () => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si, vaciarlo!",
+    cancelButtonText: "Cancelar!",
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire({
@@ -114,21 +155,13 @@ vaciar.addEventListener("click", () => {
         text: "Todos los productos han sido eliminados.",
         icon: "success",
       });
-      vaciarCarrito();
+      carrito = [];
+      localStorage.removeItem("carrito");
+      item.innerHTML = "";
+      total.innerText = 0;
     }
   });
 });
-
-function vaciarCarrito() {
-  carrito = [];
-  localStorage.removeItem("carrito");
-  numerito.innerText = carrito.length;
-  agregaElementoAlCarrito(); // Actualizar el carrito después de vaciarlo
-}
-
-function actualizarTotal() {
-  total.innerText = carrito.reduce((acc, el) => acc + el.precio, 0);
-}
 
 let botonpedido = document.querySelector("#generarPed");
 botonpedido.addEventListener("click", () => {
@@ -140,4 +173,8 @@ botonpedido.addEventListener("click", () => {
     showConfirmButton: false,
     timer: 3000,
   });
+  carrito = [];
+  localStorage.removeItem("carrito");
+  item.innerHTML = "";
+  total.innerText = 0;
 });
