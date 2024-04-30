@@ -1,5 +1,5 @@
 //Trae el JSON
-fetch("../js/arrayStock.json")
+fetch(".././js/arrayStock.json")
   .then((res) => {
     if (!res.ok) {
       throw new Error("Hubo un problema al obtener los datos.");
@@ -33,7 +33,7 @@ function agregarRow(arraycarrito) {
     let { nombre, precio, cantidad } = elemento;
     let createrow = document.createElement("tr");
     createrow.innerHTML = `
-              <td>${nombre}</td>
+              <th>${nombre}</th>
               <td><button class="btnbotoncitos btnmenos">-</button> ${cantidad} <button class="btnbotoncitos btnmas "> + </button></td>
               <td>${precio}</td>
               <td><button class="botonEliminar"><i class="bi bi-trash3-fill"></i></button></td>`;
@@ -109,10 +109,11 @@ function btnAgregarAlCarrito(arrayStock) {
 }
 //Funcion que calcula el Total
 function totalTabla() {
-  total.innerText = carrito.reduce(
+  let totalin = carrito.reduce(
     (acc, elemento) => acc + elemento.cantidad * elemento.precio,
     0
   );
+  total.innerText = totalin;
 }
 
 //Boton para vaciar el carrito
