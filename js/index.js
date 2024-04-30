@@ -1,5 +1,5 @@
 //Trae el JSON
-fetch(".././js/arrayStock.json")
+fetch("../arraystock.json")
   .then((res) => {
     if (!res.ok) {
       throw new Error("Hubo un problema al obtener los datos.");
