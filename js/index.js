@@ -1,19 +1,25 @@
-const arrayStock = [
-  { id: 1, nombre: "Nueces", precio: 1500, cantidad: 1 },
-  { id: 2, nombre: "Porotos", precio: 850, cantidad: 1 },
-  { id: 3, nombre: "Pimenton", precio: 500, cantidad: 1 },
-  { id: 4, nombre: "Tomates", precio: 1200, cantidad: 1 },
-  { id: 5, nombre: "Mani", precio: 1100, cantidad: 1 },
-  { id: 6, nombre: "Curry", precio: 1800, cantidad: 1 },
-  { id: 7, nombre: "Almendras", precio: 2500, cantidad: 1 },
-  { id: 8, nombre: "Romero", precio: 500, cantidad: 1 },
-];
+//Trae el JSON
+fetch("../js/arrayStock.json")
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error("Hubo un problema al obtener los datos.");
+    }
+    return res.json();
+  })
+  .then((data) => {
+    arrayStock = data;
+    btnAgregarAlCarrito(arrayStock);
+  })
+  .catch((error) => {
+    console.error("Hubo un error", error.mesage);
+  });
 
-let item = document.getElementById("items");
+let rows = document.getElementById("rows");
 let total = document.querySelector("#total");
 let agregar = document.querySelectorAll(".agregar");
 let numerito = document.querySelector("#numerito");
-let vaciar = document.querySelector("#vaciar");
+let vaciar = document.getElementById("btnVaciar");
+let botonpedido = document.getElementById("btnPedido");
 
 let carrito;
 if (localStorage.getItem("carrito") != null) {
@@ -21,7 +27,55 @@ if (localStorage.getItem("carrito") != null) {
 } else {
   carrito = [];
 }
-function botonizarAgregadoAlCarrito() {
+//Agrega los Rows en la Tabla
+function agregarRow(arraycarrito) {
+  arraycarrito.forEach((elemento, id) => {
+    let { nombre, precio, cantidad } = elemento;
+    let createrow = document.createElement("tr");
+    createrow.innerHTML = `
+              <td>${nombre}</td>
+              <td><button class="btnbotoncitos btnmenos">-</button> ${cantidad} <button class="btnbotoncitos btnmas "> + </button></td>
+              <td>${precio}</td>
+              <td><button class="botonEliminar"><i class="bi bi-trash3-fill"></i></button></td>`;
+    rows.appendChild(createrow);
+    //Botoncito tachito de Eliminar
+    createrow.querySelector(".botonEliminar").addEventListener("click", () => {
+      carrito.splice(id, 1);
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      rows.innerHTML = ""; //Limpia la tabla
+      agregarRow(carrito); //Dibja la tabla
+    });
+    //Botoncito de Cantidad Menos
+    createrow.querySelector(".btnmenos").addEventListener("click", () => {
+      if (elemento.cantidad >= 1) {
+        elemento.cantidad--; //Disminuye la Cantidad del elemento
+        localStorage.setItem("carrito", JSON.stringify(carrito)); //Almacena y actualiza el Carrito del Storage
+      }
+      if (elemento.cantidad === 0) {
+        carrito.splice(id, 1);
+        localStorage.setItem("carrito", JSON.stringify(carrito)); //Almacena y actualiza el Carrito del Storage
+      }
+      rows.innerHTML = ""; //Limpia la tabla
+      agregarRow(carrito); //Dibja la tabla
+    });
+    //Botoncito de Cantidad Mas
+    createrow.querySelector(".btnmas").addEventListener("click", () => {
+      if (elemento.cantidad >= 1) {
+        elemento.cantidad++; //Aumenta la Cantidad del elemento
+        localStorage.setItem("carrito", JSON.stringify(carrito)); //Almacena y actualiza el Carrito del Storage
+      }
+      if (elemento.cantidad === 0) {
+        carrito.splice(id, 1);
+        localStorage.setItem("carrito", JSON.stringify(carrito)); //Almacena y actualiza el Carrito del Storage
+      }
+      rows.innerHTML = ""; //Limpia la tabla
+      agregarRow(carrito); //Dibja la tabla
+    });
+  });
+  totalTabla();
+}
+// Botones Agregar al Carrito
+function btnAgregarAlCarrito(arrayStock) {
   agregar.forEach((boton) => {
     boton.addEventListener("click", (el) => {
       const idBoton = el.currentTarget.id;
@@ -34,147 +88,87 @@ function botonizarAgregadoAlCarrito() {
           style: {
             background: "linear-gradient(to right, red, red)",
           },
-        }).showToast(); //muestra un toastify cuando se agrega un producto ya agregado repetido !!!
+        }).showToast();
       } else {
+        Toastify({
+          text: "Producto Agregado al Carrito",
+          className: "info",
+          position: "left",
+          style: {
+            background: "linear-gradient(to right, green, green)",
+          },
+        }).showToast();
         carrito.push(producto);
         localStorage.setItem("carrito", JSON.stringify(carrito));
         numerito.innerText = carrito.length;
-        console.log(carrito);
-        prodAgregadoToastify();
       }
     });
+    numerito.innerText = carrito.length;
   });
+  agregarRow(carrito);
 }
-botonizarAgregadoAlCarrito();
-let carstorage = JSON.parse(localStorage.getItem("carrito"));
-
-function agregarItem(caritems) {
-  item.innerHTML = ""; //Limpia la Tabla
-  totalTabla();
-  caritems.forEach((elemento, id) => {
-    let { nombre, precio, cantidad } = elemento;
-    const tr = document.createElement("tr");
-    item.appendChild(tr);
-
-    const thNombre = document.createElement("th");
-    tr.appendChild(thNombre);
-    thNombre.innerText = nombre;
-    /////////////////////////////////////////////////////////////////////////////////
-    let thCantidad = document.createElement("th");
-
-    let menos = document.createElement("button");
-    menos.innerText = "-";
-    menos.className = "btnbotoncitos";
-    menos.onclick = function () {
-      if (elemento.cantidad >= 1) {
-        elemento.cantidad--; //Incrementa la Cantidad del elemento
-        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
-      }
-      if (elemento.cantidad === 0) {
-        carstorage.splice(id, 1);
-        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
-      }
-      agregarItem(caritems); //Dibja la tabla
-    };
-    thCantidad.appendChild(menos);
-
-    let span = document.createElement("span");
-    span.innerText = cantidad;
-    thCantidad.appendChild(span);
-    span.className = "mx-2";
-    tr.appendChild(thCantidad);
-
-    let mas = document.createElement("button");
-    mas.innerText = "+";
-    mas.className = "btnbotoncitos";
-    mas.onclick = function () {
-      if (elemento.cantidad >= 1) {
-        elemento.cantidad++; //Incrementa la Cantidad del elemento
-        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
-      } //Dibja la tabla
-      if (elemento.cantidad === 0) {
-        carstorage.splice(id, 1);
-        localStorage.setItem("carrito", JSON.stringify(carstorage)); //Almacena y actualiza el Carrito del Storage
-      }
-      agregarItem(caritems); //Dibja la tabla
-    };
-    thCantidad.appendChild(mas);
-    /////////////////////////////////////////////////////////////////////////////////
-    const thPrecio = document.createElement("th");
-    tr.appendChild(thPrecio);
-    thPrecio.innerText = precio;
-
-    const thEliminar = document.createElement("th");
-    tr.appendChild(thEliminar);
-    const botonEliminar = document.createElement("button");
-    botonEliminar.innerHTML = '<i class="bi bi-trash3-fill"></i>';
-    botonEliminar.classList.add("botonEliminar");
-    botonEliminar.onclick = function () {
-      carstorage.splice(id, 1);
-      console.log(id);
-      localStorage.setItem("carrito", JSON.stringify(carstorage));
-      agregarItem(caritems);
-    };
-    thEliminar.appendChild(botonEliminar);
-  });
-}
-
-agregarItem(carstorage);
+//Funcion que calcula el Total
 function totalTabla() {
-  total.innerText = carstorage.reduce(
+  total.innerText = carrito.reduce(
     (acc, elemento) => acc + elemento.cantidad * elemento.precio,
     0
   );
 }
-function prodAgregadoToastify() {
-  Toastify({
-    text: "Producto Agregado al Carrito",
-    className: "info",
-    position: "left",
-    style: {
-      background: "linear-gradient(to right, green, green)",
-    },
-  }).showToast();
-}
-console.log(carstorage);
 
+//Boton para vaciar el carrito
 vaciar.addEventListener("click", () => {
-  Swal.fire({
-    title: "Desea vaciar el carrito?",
-    text: "Esta Seguro?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Si, vaciarlo!",
-    cancelButtonText: "Cancelar!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Carrito Vacio!",
-        text: "Todos los productos han sido eliminados.",
-        icon: "success",
-      });
-      carrito = [];
-      localStorage.removeItem("carrito");
-      item.innerHTML = "";
-      total.innerText = 0;
-    }
-  });
+  if (carrito.length === 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "No hay productos en el carrito!",
+    });
+  } else {
+    Swal.fire({
+      title: "Desea vaciar el carrito?",
+      text: "Esta Seguro?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, vaciarlo!",
+      cancelButtonText: "Cancelar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Carrito Vacio!",
+          text: "Todos los productos han sido eliminados.",
+          icon: "success",
+        });
+        carrito = [];
+        localStorage.removeItem("carrito");
+        rows.innerHTML = "";
+        total.innerText = 0;
+      }
+    });
+  }
 });
 
-let botonpedido = document.querySelector("#generarPed");
+//Boton para generar el pedido
 botonpedido.addEventListener("click", () => {
-  Swal.fire({
-    position: "top-end",
-    icon: "success",
-    title: "su pedido ha sido generado",
-    text: "Gracias por su compra!!!",
-    showConfirmButton: false,
-    timer: 3000,
-  });
-  carrito = [];
-  localStorage.removeItem("carrito");
-  item.innerHTML = "";
-  total.innerText = 0;
+  if (carrito.length === 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "No hay productos en el carrito!",
+    });
+  } else {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "su pedido ha sido generado",
+      text: "Gracias por su compra!!!",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    carrito = [];
+    localStorage.removeItem("carrito");
+    rows.innerHTML = "";
+    total.innerText = 0;
+  }
 });

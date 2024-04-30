@@ -1,0 +1,10 @@
+[
+  { "id": 1, "nombre": "Nueces", "precio": 1500, "cantidad": 1 },
+  { "id": 2, "nombre": "Porotos", "precio": 850, "cantidad": 1 },
+  { "id": 3, "nombre": "Pimenton", "precio": 500, "cantidad": 1 },
+  { "id": 4, "nombre": "Tomates", "precio": 1200, "cantidad": 1 },
+  { "id": 5, "nombre": "Mani", "precio": 1100, "cantidad": 1 },
+  { "id": 6, "nombre": "Curry", "precio": 1800, "cantidad": 1 },
+  { "id": 7, "nombre": "Almendras", "precio": 2500, "cantidad": 1 },
+  { "id": 8, "nombre": "Romero", "precio": 500, "cantidad": 1 }
+]

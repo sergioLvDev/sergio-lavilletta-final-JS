@@ -1,7 +1,13 @@
 /* MEDIAS QUERIES */
 /* VISTA TABLET */
 @media (max-width: 1023px) {
+
   /* QUIENES SOMOS */
+  /* contenedor padre x 2  */
+  .contSec {
+    display: flex;
+    flex-direction: column;
+  }
 
   .contCarru {
     width: 95vw;

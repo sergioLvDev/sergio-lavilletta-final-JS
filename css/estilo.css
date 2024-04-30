@@ -74,6 +74,11 @@ a {
 
 /* PORTADA */
 /* contenedor padre x 2  */
+.contSec {
+  display: flex;
+  flex-direction: row;
+}
+
 .contImg1 {
   width: 50%;
   border-radius: 15px;
@@ -286,6 +291,11 @@ footer h3 {
 /* VISTA TABLET */
 @media (max-width: 1023px) {
   /* QUIENES SOMOS */
+  /* contenedor padre x 2  */
+  .contSec {
+    display: flex;
+    flex-direction: column;
+  }
   .contCarru {
     width: 95vw;
     margin: 5px;

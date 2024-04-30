@@ -1,6 +1,11 @@
 /* PORTADA */
 
 /* contenedor padre x 2  */
+.contSec {
+  display: flex;
+  flex-direction: row;
+}
+
 .contImg1 {
   width: 50%;
   border-radius: 15px;
